@@ -1,4 +1,4 @@
-"""shinhan_toy URL Configuration
+"""shinhantoy URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -16,7 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from rest_framework_simplejwt.views import (
+    TokenVerifyView,
+    TokenRefreshView,
+    TokenObtainPairView
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/order/',include('order.urls'))
+    path('api/order', include('order.urls')),
+    path('api/member', include('member.urls')),
+    path('api/token', TokenObtainPairView.as_view()),
 ]
