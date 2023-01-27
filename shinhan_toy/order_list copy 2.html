@@ -10,6 +10,10 @@
         $(document).ready(function () {
             const search = new URLSearchParams(location.search);
             let page = search.get('page');
+            if (!page){
+                page=1
+            }
+            page = Number(page);
 
             $.get("http://127.0.0.1:8000/api/order?page="+page)
                 .then((result) => {
@@ -25,51 +29,6 @@
                         )
                     }
                 });
-                $.get("http://127.0.0.1:8000/api/order/?page="+page)
-                    .then((result) => {
-                        $("#orders").html("");
-                        $("#pagination").html("");
-                        const total = result.count;
-                        let pages = Math.ceil(total/10);
-                        let start_page = page-2
-                        let end_page = page+2
-                        if(start_page<1){
-                            start_page=1
-                        }
-                        if(end_page>pages){
-                            end_page=pages
-                        }
-                        if(end_page<pages){
-                            end_page=start_page+5
-                        }
-
-                        for (let i=0; i<result.results.length; i++) {
-                            const order = result.results[i];
-                            $("#orders").append(
-                                $(`<a href="order_detail.html?order_id=${order.id}" class="list-group-item">
-                                    ${order.ord_no}<br><br>
-                                    ${order.ord_ymd}
-                                </a>`)
-                            )
-                        }
-
-                        for (let i=start_page; i<end_page; i++) {
-                            if(i=3){
-                                $("#pagination").append(
-                                $(`<li class="page-item active" aria-current="page">
-                                    <a class="page-link" onclick="go_page(${i})">${i}</a>
-                                    </li>`)
-                            )
-                            }
-                            else{
-                                $("#pagination").append(
-                                $(`<li class="page-item">
-                                    <a class="page-link" onclick="go_page(${i})">${i}</a>
-                                    </li>`)
-                            )
-                            }
-                        }
-                    });
         });
     </script>
     <script>
@@ -109,6 +68,7 @@
             <li class="list-group-item">상품 리스트입니다.<br><br>김성민 (2023.01.25 14:21:11)</li>
         </ul>
         <nav aria-label="Page navigation example">
+            
             <ul class="pagination">
               <li class="page-item"><a class="page-link" onclick="go_page(1)">1</a></li>
               <li class="page-item"><a class="page-link" onclick="go_page(2)">2</a></li>

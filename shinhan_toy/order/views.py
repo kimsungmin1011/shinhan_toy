@@ -30,9 +30,7 @@ class OrderDetailView(
         return orders
 
     def get(self, request, *args, **kwargs):
-        return self.retrieve(request, args, kwargs)
-
-
+        return self.retrieve(request, args, kwargs) 
 
 class CommentListView(
     mixins.ListModelMixin, 
@@ -64,3 +62,12 @@ class CommentCreateView(
     
     def post(self, request, *args, **kwargs):
         return self.create(request, args, kwargs)
+
+class CommentDeleteView(
+    mixins.DestroyModelMixin,
+    generics.GenericAPIView
+):
+    serializer_class = CommentCreateSerializer
+
+    def delete(self,request,*args,**kwargs):
+        return self.destroy(request, args, kwargs)
